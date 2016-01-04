@@ -78,13 +78,22 @@ typedef NS_ENUM(NSInteger, JBSourceMode) {
     self.zoomMode = JBZoomModeIn;
 }
 
-- (void)animateWithImagePaths:(NSArray *)imagePaths transitionDuration:(float)duration initialDelay:(float)delay loop:(BOOL)shouldLoop isLandscape:(BOOL)isLandscape
+- (void)animateWithImagePaths:(NSArray<__kindof NSString *> *)imagePaths
+           transitionDuration:(float)duration
+                 initialDelay:(float)delay
+                         loop:(BOOL)shouldLoop
+                  isLandscape:(BOOL)isLandscape
 {
     _sourceMode = JBSourceModePaths;
     [self startAnimationsWithData:imagePaths transitionDuration:duration initialDelay:delay loop:shouldLoop isLandscape:isLandscape];
 }
 
-- (void)animateWithImages:(NSArray *)images transitionDuration:(float)duration initialDelay:(float)delay loop:(BOOL)shouldLoop isLandscape:(BOOL)isLandscape {
+- (void)animateWithImages:(NSArray<__kindof UIImage *> *)images
+       transitionDuration:(float)duration
+             initialDelay:(float)delay
+                     loop:(BOOL)shouldLoop
+              isLandscape:(BOOL)isLandscape
+{
     _sourceMode = JBSourceModeImages;
     [self startAnimationsWithData:images transitionDuration:duration initialDelay:delay loop:shouldLoop isLandscape:isLandscape];
 }
