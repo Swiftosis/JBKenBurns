@@ -27,7 +27,9 @@
 #define enlargeRatio 1.1
 #define imageBufer 3
 
-enum JBSourceMode {
+#define randomBool() (arc4random_uniform(100) < 50)
+
+typedef NS_ENUM(NSInteger, JBSourceMode) {
     JBSourceModeImages,
     JBSourceModePaths
 };
@@ -35,18 +37,23 @@ enum JBSourceMode {
 // Private interface
 @interface JBKenBurnsView ()
 
-@property (nonatomic, strong) NSMutableArray *imagesArray;
+@property (nonatomic, strong) NSMutableArray *imagesArray; // UIImages || Path Strings
 @property (nonatomic, strong) NSTimer *nextImageTimer;
 
-@property (nonatomic, assign) CGFloat showImageDuration;
-@property (nonatomic, assign) BOOL shouldLoop;
-@property (nonatomic, assign) BOOL isLandscape;
-@property (nonatomic, assign) enum JBSourceMode sourceMode;
+@property (nonatomic) CGFloat showImageDuration;
+@property (nonatomic) BOOL shouldLoop;
+@property (nonatomic) BOOL isLandscape;
+@property (nonatomic) JBSourceMode sourceMode;
 
 @end
 
 
+
 @implementation JBKenBurnsView
+
+
+
+
 
 #pragma mark - Initialization
 
@@ -113,6 +120,9 @@ enum JBSourceMode {
 
 - (void)addImage:(UIImage *)image
 {
+    NSAssert(self.sourceMode == JBSourceModeImages, @"addImage: can only be called in JBSourceModeImages sourceMode!");
+    NSAssert(image != nil,@"image param cannot be nil");
+    
     [_imagesArray addObject:image];
 }
 
@@ -123,7 +133,7 @@ enum JBSourceMode {
     return _imagesArray;
 }
 
-- (UIImage *)currentImage
+- (nullable UIImage *)currentImage
 {
     UIImage * image = nil;
     id imageInfo = [_imagesArray count] > 0 ? _imagesArray[MIN([_imagesArray count] - 1, MAX(self.currentImageIndex, 0))] : nil;
@@ -143,9 +153,12 @@ enum JBSourceMode {
 
 - (void)nextImage
 {
-    _currentImageIndex++;
+    ++_currentImageIndex;
 
     UIImage *image = self.currentImage;
+    
+    NSAssert(image != nil, @"image must not be nil");
+    
     UIImageView *imageView = nil;
     
     float originX       = -1;
@@ -268,7 +281,7 @@ enum JBSourceMode {
             finishTransform = standardTransform;
             break;
         case JBZoomModeRandom: {
-            if ([self randomBool]) {
+            if (randomBool()) {
                 startTransform = zoomedTransform;
                 finishTransform = standardTransform;
             }
@@ -298,8 +311,10 @@ enum JBSourceMode {
     }
 }
 
-- (float)getResizeRatioFromImage:(UIImage *)image width:(float)frameWidth height:(float)frameHeight
+- (float)getResizeRatioFromImage:(nonnull UIImage *)image width:(float)frameWidth height:(float)frameHeight
 {
+    NSAssert(image != nil, @"image must not be nil");
+    
     float resizeRatio   = -1;
     float widthDiff     = -1;
     float heightDiff    = -1;
@@ -375,9 +390,6 @@ enum JBSourceMode {
     }
 }
 
-- (BOOL)randomBool
-{
-    return arc4random_uniform(100) < 50;
-}
+
 
 @end

@@ -26,6 +26,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @class JBKenBurnsView;
 @protocol KenBurnsViewDelegate <NSObject>
 
@@ -36,7 +37,10 @@
 @end
 
 
-NS_ENUM(NSInteger, JBZoomMode) {
+
+
+
+typedef NS_ENUM(NSInteger, JBZoomMode) {
     JBZoomModeIn,
     JBZoomModeOut,
     JBZoomModeRandom
@@ -45,9 +49,9 @@ NS_ENUM(NSInteger, JBZoomMode) {
 
 @interface JBKenBurnsView : UIView
 
-@property (nonatomic,weak) id<KenBurnsViewDelegate> delegate;
-@property (nonatomic,assign,readonly) NSInteger currentImageIndex;
-@property (nonatomic,assign) enum JBZoomMode zoomMode;
+@property (nonatomic,weak, nullable) id<KenBurnsViewDelegate> delegate;
+@property (nonatomic,readonly) NSInteger currentImageIndex;
+@property (nonatomic) JBZoomMode zoomMode;
 
 ///----------------------------------
 /// @name Initialization
@@ -109,13 +113,14 @@ NS_ENUM(NSInteger, JBZoomMode) {
  @return A NSArray with the images in the animation.
  @since 0.3
  */
-- (NSArray *)images;
+@property (nonatomic, nullable, readonly) NSArray * images;
 
 /**
  Return the current image on the animation.
  @return A UIImage with the image on top of the animation.
  @since 0.3
  */
-- (UIImage *)currentImage;
+@property (nonatomic, nullable, readonly) UIImage * currentImage;
 
 @end
+NS_ASSUME_NONNULL_END
