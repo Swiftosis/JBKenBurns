@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, JBZoomMode) {
  @param isLandscape YES if the view is in landscape mode.
  @since 0.3
  */
-- (void)animateWithImagePaths:(NSArray *)imagePaths
+- (void)animateWithImagePaths:(NSArray<__kindof NSString *> *)imagePaths
            transitionDuration:(float)time
                  initialDelay:(float)delay
                          loop:(BOOL)isLoop
@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, JBZoomMode) {
  @param isLandscape YES if the view is in landscape mode.
  @since 0.3
  */
-- (void)animateWithImages:(NSArray *)images
+- (void)animateWithImages:(NSArray<__kindof UIImage *> *)images
        transitionDuration:(float)time
              initialDelay:(float)delay
                      loop:(BOOL)isLoop
