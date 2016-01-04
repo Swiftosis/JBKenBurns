@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, JBZoomMode) {
 
 @interface JBKenBurnsView : UIView
 
+@property (nonatomic, readonly) UIColor *imageViewBackgroundColor;
 @property (nonatomic,weak, nullable) id<KenBurnsViewDelegate> delegate;
 @property (nonatomic,readonly) NSInteger currentImageIndex;
 @property (nonatomic) JBZoomMode zoomMode;
@@ -59,10 +60,10 @@ typedef NS_ENUM(NSInteger, JBZoomMode) {
 
 /**
  Start the animation with a NSArray of paths to images.
- @param imagePaths  A NSArray of paths to images.
- @param time        The number of second of each image.
- @param isLoop      YES if you want to play the animation in loop.
- @param isLandscape YES if the view is in landscape mode.
+ @param imagePaths       A NSArray of paths to images.
+ @param time             The number of second of each image.
+ @param isLoop           YES if you want to play the animation in loop.
+ @param isLandscape      YES if the view is in landscape mode.
  @since 0.3
  */
 - (void)animateWithImagePaths:(NSArray<__kindof NSString *> *)imagePaths
@@ -72,11 +73,27 @@ typedef NS_ENUM(NSInteger, JBZoomMode) {
                   isLandscape:(BOOL)isLandscape;
 
 /**
+ Start the animation with a NSArray of paths to images.
+ @param imagePaths       A NSArray of paths to images.
+ @param time             The number of second of each image.
+ @param isLoop           YES if you want to play the animation in loop.
+ @param isLandscape      YES if the view is in landscape mode.
+ @param backgroundColor  Color of the background of the picture.
+ @since 0.3
+ */
+- (void)animateWithImagePaths:(NSArray<__kindof NSString *> *)imagePaths
+           transitionDuration:(float)time
+                 initialDelay:(float)delay
+                         loop:(BOOL)isLoop
+                  isLandscape:(BOOL)isLandscape
+              backgroundColor:(nullable UIColor *)backgroundColor;
+
+/**
  Start the animation with a NSArray of UIImages.
- @param imagePaths  A NSArray of images.
- @param time        The number of second of each image.
- @param isLoop      YES if you want to play the animation in loop.
- @param isLandscape YES if the view is in landscape mode.
+ @param imagePaths       A NSArray of images.
+ @param time             The number of second of each image.
+ @param isLoop           YES if you want to play the animation in loop.
+ @param isLandscape      YES if the view is in landscape mode.
  @since 0.3
  */
 - (void)animateWithImages:(NSArray<__kindof UIImage *> *)images
@@ -84,6 +101,22 @@ typedef NS_ENUM(NSInteger, JBZoomMode) {
              initialDelay:(float)delay
                      loop:(BOOL)isLoop
               isLandscape:(BOOL)isLandscape;
+
+/**
+ Start the animation with a NSArray of UIImages.
+ @param imagePaths       A NSArray of images.
+ @param time             The number of second of each image.
+ @param isLoop           YES if you want to play the animation in loop.
+ @param isLandscape      YES if the view is in landscape mode.
+ @param backgroundColor  Color of the background of the picture.
+ @since 0.3
+ */
+- (void)animateWithImages:(NSArray<__kindof UIImage *> *)images
+       transitionDuration:(float)time
+             initialDelay:(float)delay
+                     loop:(BOOL)isLoop
+              isLandscape:(BOOL)isLandscape
+          backgroundColor:(nullable UIColor *)backgroundColor;
 
 
 ///----------------------------------

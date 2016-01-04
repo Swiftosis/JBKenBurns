@@ -63,7 +63,9 @@
                  transitionDuration:6
                        initialDelay:0
                                loop:YES
-                        isLandscape:YES];
+                        isLandscape:YES
+                    backgroundColor:[UIColor clearColor]
+     ];
     
     self.statuslabel.text = @"";
 }

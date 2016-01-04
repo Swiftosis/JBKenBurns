@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, JBSourceMode) {
 
 @property (nonatomic, strong) NSMutableArray *imagesArray; // UIImages || Path Strings
 @property (nonatomic, strong) NSTimer *nextImageTimer;
+@property (nonatomic, strong, nonnull) UIColor *imageViewBackgroundColor;
 
 @property (nonatomic) CGFloat showImageDuration;
 @property (nonatomic) BOOL shouldLoop;
@@ -73,9 +74,24 @@ typedef NS_ENUM(NSInteger, JBSourceMode) {
 
 - (void)setup
 {
+    _imageViewBackgroundColor = [UIColor blackColor];
     self.backgroundColor = [UIColor clearColor];
     self.layer.masksToBounds = YES;
     self.zoomMode = JBZoomModeIn;
+}
+
+- (void)animateWithImagePaths:(NSArray<__kindof NSString *> *)imagePaths
+           transitionDuration:(float)time
+                 initialDelay:(float)delay
+                         loop:(BOOL)isLoop
+                  isLandscape:(BOOL)isLandscape {
+    
+    [self animateWithImagePaths:imagePaths
+             transitionDuration:time
+                   initialDelay:delay
+                           loop:isLoop
+                    isLandscape:isLandscape
+                backgroundColor:nil];
 }
 
 - (void)animateWithImagePaths:(NSArray<__kindof NSString *> *)imagePaths
@@ -83,9 +99,29 @@ typedef NS_ENUM(NSInteger, JBSourceMode) {
                  initialDelay:(float)delay
                          loop:(BOOL)shouldLoop
                   isLandscape:(BOOL)isLandscape
+              backgroundColor:(nullable UIColor *)backgroundColor
 {
     _sourceMode = JBSourceModePaths;
-    [self startAnimationsWithData:imagePaths transitionDuration:duration initialDelay:delay loop:shouldLoop isLandscape:isLandscape];
+    [self startAnimationsWithData:imagePaths
+               transitionDuration:duration
+                     initialDelay:delay
+                             loop:shouldLoop
+                      isLandscape:isLandscape
+                  backgroundColor:backgroundColor];
+}
+
+- (void)animateWithImages:(NSArray<__kindof UIImage *> *)images
+       transitionDuration:(float)duration
+             initialDelay:(float)delay
+                     loop:(BOOL)shouldLoop
+              isLandscape:(BOOL)isLandscape {
+    
+    [self animateWithImages:images
+         transitionDuration:duration
+               initialDelay:delay
+                       loop:shouldLoop
+                isLandscape:isLandscape
+            backgroundColor:nil];
 }
 
 - (void)animateWithImages:(NSArray<__kindof UIImage *> *)images
@@ -93,18 +129,31 @@ typedef NS_ENUM(NSInteger, JBSourceMode) {
              initialDelay:(float)delay
                      loop:(BOOL)shouldLoop
               isLandscape:(BOOL)isLandscape
+          backgroundColor:(nullable UIColor *)backgroundColor
 {
     _sourceMode = JBSourceModeImages;
-    [self startAnimationsWithData:images transitionDuration:duration initialDelay:delay loop:shouldLoop isLandscape:isLandscape];
+    [self startAnimationsWithData:images
+               transitionDuration:duration
+                     initialDelay:delay
+                             loop:shouldLoop
+                      isLandscape:isLandscape
+                  backgroundColor:backgroundColor];
 }
 
-- (void)startAnimationsWithData:(NSArray *)data transitionDuration:(float)duration initialDelay:(float)delay loop:(BOOL)shouldLoop isLandscape:(BOOL)isLandscape
+- (void)startAnimationsWithData:(NSArray *)data
+             transitionDuration:(float)duration
+                   initialDelay:(float)delay
+                           loop:(BOOL)shouldLoop
+                    isLandscape:(BOOL)isLandscape
+                backgroundColor:(nullable UIColor *)backgroundColor
 {
+
+    
     _imagesArray        = [data mutableCopy];
     _showImageDuration  = duration;
     _shouldLoop         = shouldLoop;
     _isLandscape        = isLandscape;
-    
+    _imageViewBackgroundColor    = backgroundColor ?: [UIColor blackColor];
     // start at 0
     _currentImageIndex = -1;
     
@@ -186,7 +235,7 @@ typedef NS_ENUM(NSInteger, JBSourceMode) {
     float optimusWidth  = (image.size.width * resizeRatio) * enlargeRatio;
     float optimusHeight = (image.size.height * resizeRatio) * enlargeRatio;
     imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, optimusWidth, optimusHeight)];
-    imageView.backgroundColor = [UIColor blackColor];
+    imageView.backgroundColor = self.imageViewBackgroundColor;
     
     // Calcule the maximum move allowed.
     float maxMoveX = optimusWidth - frameWidth;
